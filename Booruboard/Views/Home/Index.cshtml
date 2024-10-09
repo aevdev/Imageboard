@@ -1,0 +1,35 @@
+﻿@model List<ImagePost>
+
+
+<div class="row">
+    @foreach (var image in Model)
+    {
+        <div class="col-md-3">
+            <img src="@image.preview_file_url" alt="Image" class="img-thumbnail" />
+            <form asp-action="LikePost" asp-controller="Like" method="post">
+                <input type="hidden" name="postId" value="@image.Id" />
+                <button type="submit" class="btn btn-primary">Like</button>
+            </form>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="pagination justify-content-center">
+        <ul class="list-group flex-md-row">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Search", new { tag = ViewBag.Tag, page = ViewBag.CurrentPage - 1 })">&laquo;</a>
+            </li>
+
+            @for (int i = 1; i <= 10; i++) // Показать 10 страниц
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Search", new { tag = ViewBag.Tag, page = i })">@i</a>
+                </li>
+            }
+
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Search", new { tag = ViewBag.Tag, page = ViewBag.CurrentPage + 1 })">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</div>
